@@ -1,0 +1,98 @@
+.control-layout {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-lg;
+  height: 100%;
+  padding: $gap-md 0;
+}
+
+.control-toggle {
+  font-family: $font-family-permanent-marker;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 3rem;
+  padding: 0 1rem;
+  background-color: $color-white;
+  color: $color-cod-gray;
+  border-radius: $radius;
+  cursor: pointer;
+
+  &.dandelion {
+    background-color: $color-dandelion;
+  }
+
+  &.screaming-green {
+    background-color: $color-screaming-green;
+  }
+
+  &.heliothrope {
+    background-color: $color-heliothrope;
+  }
+
+  &.bittersweet {
+    background-color: $color-bittersweet;
+  }
+
+  &.aquamarine {
+    background-color: $color-aquamarine;
+  }
+
+  .state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-white;
+    color: $color-cod-gray;
+    font-size: 0.625rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 0.25em solid $color-cod-gray;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translate(-25%, -25%) scale(0);
+    transition: $tempo-moderato cubic-bezier(0.5, -0.4, 0.5, 1.4);
+    transition-property: opacity, transform;
+  }
+
+  input[type='checkbox'] {
+    @include accessible-hide;
+
+    & ~ .state--on {
+      opacity: 0;
+      transform: translate(-25%, -25%) scale(0);
+    }
+
+    & ~ .state--off {
+      opacity: 1;
+      transform: translate(-25%, -25%) scale(1);
+    }
+
+    &:checked ~ .state--on {
+      opacity: 1;
+      transform: translate(-25%, -25%) scale(1);
+    }
+
+    &:checked ~ .state--off {
+      opacity: 0;
+      transform: translate(-25%, -25%) scale(0);
+    }
+  }
+}
+
+.control-input {
+  display: flex;
+  flex-direction: column;
+  padding: $gap-md;
+  background-color: $color-cod-gray;
+  border-radius: $radius;
+
+  &-search {
+    display: flex;
+    align-items: stretch;
+    gap: $gap-md;
+  }
+}

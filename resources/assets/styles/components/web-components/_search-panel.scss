@@ -1,0 +1,22 @@
+euros-search-panel {
+  grid-area: search;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-md;
+  position: fixed;
+  top: $banner-height;
+  left: 0;
+  width: 100%;
+  height: $search-panel-height;
+  padding: $gap-md;
+  color: $color-white;
+  background-color: $color-cod-gray;
+  border-bottom: 0.125em solid $color-white;
+  transform: translate3d(0, -100%, 0);
+  transition: transform $tempo-allegretto cubic-bezier(1, 0, 0, 1);
+  z-index: 9;
+
+  &[active] {
+    transform: translate3d(0, 0, 0);
+  }
+}

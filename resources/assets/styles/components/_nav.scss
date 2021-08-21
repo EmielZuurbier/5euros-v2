@@ -1,0 +1,33 @@
+.nav {
+  display: flex;
+
+  .menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $gap-md;
+    list-style: none;
+    padding: $gap-lg 0;
+    margin: 0;
+
+    &-item {
+      a {
+        display: block;
+        position: relative;
+        appearance: none;
+        border-radius: 0.25rem;
+        border: 0;
+        font-size: 1em;
+        font-family: $font-family-permanent-marker;
+        padding: 1rem 1.125rem;
+        background-color: $color-heliothrope;
+        color: $color-cod-gray;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color-alto;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<style>
+  :host {
+    contain: layout;
+    display: block;
+    perspective: 35px;
+    font-size: 100%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .inner {
+    transition: transform 50ms ease-in-out;
+  }
+
+  :host(:active) .inner {
+    transform: translate3d(0, 0, -1px);
+  }
+</style>
+
+<div class="inner">
+  <slot></slot>
+</div>

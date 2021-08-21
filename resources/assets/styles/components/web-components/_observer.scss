@@ -1,0 +1,16 @@
+euros-observer {
+  --cell-size: 7rem;
+
+  grid-area: observer;
+  display: grid;
+  grid-auto-rows: auto;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cell-size), 1fr));
+  grid-gap: $gap-md;
+  list-style: none;
+  margin: 0;
+  padding: $gap-md;
+
+  @media screen and (min-width: 30em) {
+    --cell-size: 8rem;
+  }
+}

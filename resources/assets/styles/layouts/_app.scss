@@ -1,0 +1,39 @@
+.shell {
+  display: grid;
+  grid-template:
+    'banner' 4.25rem
+    'main-content' auto / 1fr;
+
+  /**
+   * TODO: Responsive layout.
+   */
+  // @media screen and (min-width: 48em) {
+  //   grid-template: 'banner main-content' 1fr / 15em 1fr;
+  // }
+}
+
+.banner {
+  grid-area: banner;
+}
+
+.main-content {
+  position: relative;
+  color: $color-white;
+  min-height: calc(100vh - #{$banner-height});
+  will-change: margin-top;
+  transition: margin-top $tempo-allegretto cubic-bezier(1, 0, 0, 1);
+
+  /**
+  * TODO: Responsive layout.
+  */
+  // @media screen and (min-width: 48em) {
+  //   display: grid;
+  //   grid-template:
+  //     'search' 7em
+  //     'observer' 1fr / 1fr;
+  // }
+
+  .search-panel-opened & {
+    margin-top: $search-panel-height;
+  }
+}

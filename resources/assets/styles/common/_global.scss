@@ -1,0 +1,42 @@
+:root {
+  --color-white: #{$color-white};
+  --color-gallery: #{$color-gallery};
+  --color-alto: #{$color-alto};
+  --color-tundora: #{$color-tundora};
+  --color-mine-shaft: #{$color-mine-shaft};
+  --color-cod-gray: #{$color-cod-gray};
+  --color-dandelion: #{$color-dandelion};
+  --color-screaming-green: #{$color-screaming-green};
+  --color-heliothrope: #{$color-heliothrope};
+  --color-bittersweet: #{$color-bittersweet};
+  --color-aquamarine: #{$color-aquamarine};
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-roboto;
+  background-color: $color-cod-gray;
+}
+
+.needs-js {
+  pointer-events: none;
+  filter: saturate(0%);
+  opacity: 0.25;
+  transition: $tempo-allegro ease-in;
+  transition-property: filter, opacity;
+
+  .js-ready & {
+    pointer-events: unset;
+    filter: saturate(100%);
+    opacity: 1;
+  }
+}

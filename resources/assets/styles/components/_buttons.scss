@@ -1,0 +1,57 @@
+.wp-block-button__link,
+.button {
+  position: relative;
+  display: inline-block;
+  appearance: none;
+  border-radius: 0.25rem;
+  border: 0;
+  font-family: $font-family-permanent-marker;
+  font-size: 1em;
+  padding: 1rem 1.125rem;
+  text-decoration: none;
+  cursor: pointer;
+
+  &.is-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    transition: $tempo-presto ease-in-out;
+    transition-property: opacity, box-shadow;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-white;
+    color: $color-cod-gray;
+    font-size: 0.625rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 0.25em solid $color-cod-gray;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translate(-25%, -25%) scale(0);
+    transition: 500ms cubic-bezier(0.5, -0.4, 0.5, 1.4);
+    transition-property: opacity, transform;
+  }
+
+  &[active],
+  &.is-active {
+    .check {
+      opacity: 1;
+      transform: translate(-25%, -25%) scale(1);
+    }
+  }
+}

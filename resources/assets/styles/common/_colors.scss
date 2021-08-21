@@ -1,0 +1,23 @@
+$colors: (
+  'white': $color-white,
+  'gallery': $color-gallery,
+  'alto': $color-alto,
+  'tundora': $color-tundora,
+  'mine-shaft': $color-mine-shaft,
+  'cod-gray': $color-cod-gray,
+  'dandelion': $color-dandelion,
+  'screaming-green': $color-screaming-green,
+  'heliothrope': $color-heliothrope,
+  'bittersweet': $color-bittersweet,
+  'aquamarine': $color-aquamarine
+);
+
+@each $name, $color in $colors {
+  .has-#{$name}-color {
+    color: $color;
+  }
+
+  .has-#{$name}-background-color {
+    background-color: $color;
+  }
+}

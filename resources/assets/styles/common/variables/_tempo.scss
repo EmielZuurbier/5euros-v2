@@ -1,0 +1,24 @@
+$tempo-largo: 1250ms;
+$tempo-adagio: 750ms;
+$tempo-moderato: 350ms;
+$tempo-allegretto: 250ms;
+$tempo-allegro: 150ms;
+$tempo-presto: 50ms;
+
+// largo 1700
+// adagio 1050
+// andante 650
+// moderato 400
+// allegretto 250
+// allegro 150
+// vivace 100
+// presto 50
+
+:root {
+  --tempo-largo: $tempo-largo;
+  --tempo-adagio: $tempo-adagio;
+  --tempo-moderato: $tempo-moderato;
+  --tempo-allegretto: $tempo-allegretto;
+  --tempo-allegro: $tempo-allegro;
+  --tempo-presto: $tempo-presto;
+}

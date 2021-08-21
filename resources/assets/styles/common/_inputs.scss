@@ -1,0 +1,127 @@
+legend {
+  margin-bottom: 0.5rem;
+}
+
+fieldset {
+  padding: 0.5rem;
+  border: 0.125rem solid $color-white;
+  border-radius: $radius;
+}
+
+label {
+  font-family: $font-family-permanent-marker;
+  margin-bottom: $gap-md;
+}
+
+input[type='text'] {
+  appearance: none;
+  font-family: $font-family-roboto;
+  flex-grow: 1;
+  height: 3rem;
+  padding: 1rem;
+  max-width: none;
+  color: $color-white;
+  border-radius: $radius;
+  border: 0.125rem solid $color-white;
+  background-color: transparent;
+  transition: background-color $tempo-presto ease-in-out;
+
+  &:focus {
+    outline: 0;
+    background-color: $color-mine-shaft;
+  }
+}
+
+input[type='range'] {
+  height: 1.75rem;
+  -webkit-appearance: none;
+  margin: 0.625rem 0;
+  width: 100%;
+  background-color: transparent;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0.625rem;
+  cursor: pointer;
+  background: $color-dandelion;
+  border-radius: 0.25rem;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  font-size: 0.625rem;
+  border: 3px solid $color-cod-gray;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  background: $color-white;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -8px;
+}
+
+input[type='range']:focus::-webkit-slider-runnable-track {
+  background: #49d83f;
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 0.5rem;
+  cursor: pointer;
+  background: $color-dandelion;
+  border-radius: 0.25rem;
+}
+
+input[type='range']::-moz-range-thumb {
+  font-size: 0.625rem;
+  background: $color-white;
+  color: $color-cod-gray;
+  border: 0.125rem solid $color-cod-gray;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type='range']::-ms-track {
+  width: 100%;
+  height: 0.625rem;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type='range']::-ms-fill-lower {
+  background: $color-dandelion;
+  border: 0;
+  border-radius: 0.125rem;
+}
+
+input[type='range']::-ms-fill-upper {
+  background: $color-dandelion;
+  border: 0;
+  border-radius: 0.125rem;
+}
+
+input[type='range']::-ms-thumb {
+  margin-top: 1px;
+  border: 0.125rem solid $color-white;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background: $color-cod-gray;
+  cursor: pointer;
+}
+
+input[type='range']:focus::-ms-fill-lower {
+  background: $color-dandelion;
+}
+
+input[type='range']:focus::-ms-fill-upper {
+  background: $color-dandelion;
+}

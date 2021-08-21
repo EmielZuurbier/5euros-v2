@@ -1,0 +1,95 @@
+.inner {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  position: relative;
+  aspect-ratio: 1 / 1;
+  font-size: 100%;
+  border-radius: $radius;
+  border: 0.125rem solid $color-white;
+  cursor: pointer;
+  overflow: hidden;
+  transition: $tempo-allegro ease-in-out;
+  transition-property: border-color, box-shadow;
+
+  @supports not (aspect-ratio: 1 / 1) {
+    &::before {
+      grid-area: 1 / 1 / 2 / 2;
+      content: '';
+      padding-top: 100%;
+      z-index: 1;
+    }
+  }
+
+  .crazy-mode-active [playing] & {
+    border-color: $color-screaming-green;
+    box-shadow: 0 0 0.75rem 0.25rem $color-screaming-green;
+  }
+
+  & > * {
+    grid-area: 1 / 1 / 2 / 2;
+    position: relative;
+  }
+
+  &-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-white;
+    font-size: 2rem;
+  }
+
+  &-thumbnail {
+    user-select: none;
+    margin: 0;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: $tempo-allegro ease-in-out;
+      transition-property: opacity, visibility;
+
+      [playing] & {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
+
+  &-header {
+    pointer-events: none;
+    align-self: end;
+    justify-self: start;
+    z-index: 2;
+  }
+
+  &-title {
+    user-select: none;
+    font-size: clamp(0.625rem, 3vw, 1rem);
+    color: inherit;
+    margin: 0;
+    padding: 10px;
+    transition: $tempo-allegro ease-in-out;
+    transition-property: opacity, visibility;
+
+    [playing] & {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  img {
+    user-select: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fade-in 500ms ease-out forwards;
+  }
+}

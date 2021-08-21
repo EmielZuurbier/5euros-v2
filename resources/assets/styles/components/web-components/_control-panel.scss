@@ -1,0 +1,23 @@
+euros-control-panel {
+  grid-area: controls;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-md;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  max-height: calc(100% - #{$banner-height});
+  padding: $gap-md;
+  color: $color-white;
+  background-color: $color-cod-gray;
+  overflow-y: scroll;
+  transform: translate3d(0, 100%, 0);
+  transition: transform $tempo-allegretto cubic-bezier(1, 0, 0, 1);
+  z-index: 8;
+
+  &[active] {
+    transform: translate3d(0, 0, 0);
+  }
+}

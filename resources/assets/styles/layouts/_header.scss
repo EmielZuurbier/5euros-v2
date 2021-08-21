@@ -1,0 +1,46 @@
+.banner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $banner-height;
+  background-color: $color-cod-gray;
+  color: $color-white;
+  border-bottom: 0.125em solid $color-white;
+  z-index: 10;
+
+  // @media screen and (min-width: 48em) {
+  //   height: auto;
+  //   border-bottom: 0;
+  //   border-right: 0.125em solid $color-white;
+  // }
+
+  &-container {
+    display: grid;
+    grid-template: 'brand actions' 1fr / auto auto;
+    justify-content: space-between;
+    padding: 0 $gap-md;
+    height: 100%;
+
+    // @media screen and (min-width: 48em) {
+    //   grid-template:
+    //     'brand' auto
+    //     'actions' auto / 1fr;
+    //   gap: $gap-lg;
+    // }
+  }
+
+  &-brand {
+    display: flex;
+    align-items: center;
+  }
+
+  &-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -1,0 +1,71 @@
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.header-in {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+  animation: header-in $tempo-moderato $tempo-moderato
+    cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes thumbnail-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.thumbnail-in {
+  opacity: 0;
+  animation: thumbnail-in $tempo-allegretto ease-out forwards;
+}
+
+@keyframes data-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.data-in {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: data-in $tempo-allegretto cubic-bezier(0.18, 0.89, 0.32, 1.28)
+    forwards;
+}
+
+@keyframes data-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.data-out {
+  opacity: 1;
+  transform: scale(1);
+  animation: data-out $tempo-allegretto cubic-bezier(0.18, 0.89, 0.32, 1.28)
+    forwards;
+}
