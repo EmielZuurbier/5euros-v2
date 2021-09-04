@@ -1,7 +1,8 @@
 /**
- * Returns an array of elements that are currently in voew.
+ * Returns an array of elements that are currently in the viewport.
+ * With the partially boolean enabled you can specify if the elements should only be partially or completely in view.
  * @param {string} selector A CSS selector to query elements.
- * @param {boolean} partially Detect elements that are partially in view. Otherwise they would have to be fully in view.
+ * @param {boolean} partially Trigger on partially in viewport or fully in viewport.
  * @returns {HTMLElement[]}
  */
 const getElementsInView = (selector = '*', partially = true) =>
