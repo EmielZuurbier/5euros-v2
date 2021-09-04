@@ -1,5 +1,5 @@
 export default class Overdrive {
-  static meta() {
+  static get meta() {
     return {
       name: 'Overdrive',
       params: {
@@ -47,14 +47,18 @@ export default class Overdrive {
   #drive
 
   /**
+   * @typedef {object} OverDriveArgs
+   * @property {number} preBand
+   * @property {number} color
+   * @property {number} drive
+   * @property {number} postCut
+   */
+
+  /**
    * Overdrive effect module for the Web Audio API.
    *
    * @param {AudioContext} context
-   * @param {object} args
-   * @param {number} args.preBand
-   * @param {number} args.color
-   * @param {number} args.drive
-   * @param {number} args.postCut
+   * @param {OverDriveArgs} args
    */
   constructor(context, { bypass, color, preBand, postCut, drive }) {
     this.input = context.createGain()
@@ -77,7 +81,7 @@ export default class Overdrive {
 
     this.bypass = bypass
 
-    const { params } = Overdrive.meta()
+    const { params } = Overdrive.meta
 
     // Defaults
     this.#bandpass.frequency.value = color || params.color.defaultValue
@@ -135,6 +139,9 @@ export default class Overdrive {
     return this.#lowpass.frequency.setValueAtTime(value, 0)
   }
 
+  /**
+   * When true the effect will not be connected.
+   */
   get bypass() {
     return this.#bypass
   }

@@ -10,6 +10,9 @@
     "serviceworker": [
       "./scripts/workers/service/index.js"
     ],
+    "bit-crusher-worklet": [
+      "./scripts/worklets/BitCrusherProcessor.js"
+    ],
     "customizer": [
       "./scripts/customizer.js"
     ]

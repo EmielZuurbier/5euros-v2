@@ -76,7 +76,7 @@ export default class Router {
    */
   async loadEvents() {
     // Fire common init JS
-    await this.fire('common', 'customElements')
+    await this.fire('common', 'setup')
     await this.fire('common')
 
     // Fire page-specific init JS, and then finalize JS

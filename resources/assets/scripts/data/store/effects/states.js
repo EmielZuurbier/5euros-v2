@@ -24,5 +24,13 @@ export default [
       decay: 4,
       reverse: 0
     }
+  },
+  {
+    name: 'bitCrusher',
+    state: {
+      bypass: true,
+      bitDepth: 3,
+      frequencyReduction: 0.1
+    }
   }
 ]

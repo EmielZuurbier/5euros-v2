@@ -54,6 +54,9 @@ class Scripts
                         ],
                         'worker'        => \App\asset_path('scripts/worker.js'),
                         'serviceWorker' => \App\asset_path('scripts/serviceworker.js'),
+                        'worklets'      => [
+                            'bitCrusher'   => \App\asset_path('scripts/bit-crusher-worklet.js'),
+                        ],
                         'nonce'         => wp_create_nonce('wp_rest')
                     ],
                     'position'      => 'before'

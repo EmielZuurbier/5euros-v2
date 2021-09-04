@@ -37,7 +37,7 @@ export default class Store {
         Reflect.set(state, key, value)
 
         const changeEvent = `${name}Change`
-        // console.debug(`${changeEvent}: ${key}`, JSON.stringify(value))
+        console.debug(`${changeEvent}: ${key}`, value)
         this.events.publish(`${changeEvent}`, state)
 
         this.#selectedStateKey = null

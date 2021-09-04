@@ -1,7 +1,11 @@
 import { settingsStore, effectsStore } from '@data/store'
-import { Connector, Player, Overdrive, Reverb } from '@audio'
+import { BitCrusher, Connector, Player, Overdrive, Reverb } from '@audio'
 
 export default class AudioController {
+  static get audioWorklets() {
+    return [window.__appData__.worklets.bitCrusher]
+  }
+
   /**
    * An AudioContext instance to decode and play audio with.
    * @var {AudioContext}
@@ -52,9 +56,33 @@ export default class AudioController {
     this.#effectsOut = new Connector(this.#context)
     this.#effectsOut.connect(this.#context.destination)
 
-    this.createEffects()
-    this.connectEffects()
-    this.addEventListeners()
+    /**
+     * First register the worklets, then do the effects.
+     */
+    this.registerAudioWorklets()
+      .then(() => {
+        this.createEffects()
+        this.connectEffects()
+        this.addEventListeners()
+      })
+      .catch(console.error)
+  }
+
+  /**
+   * Registers the audio worklets specified in the audioWorklets static getter array.
+   */
+  async registerAudioWorklets() {
+    await Promise.all(
+      AudioController.audioWorklets.map(path =>
+        this.#context.audioWorklet
+          .addModule(path)
+          .then(() =>
+            console.debug(
+              `Audio worklet from ${path} has been added successfully.`
+            )
+          )
+      )
+    )
   }
 
   /**
@@ -71,6 +99,10 @@ export default class AudioController {
 
     effectsStore.events.subscribe('reverbChange', state => {
       this.updateEffect('reverb', state)
+    })
+
+    effectsStore.events.subscribe('bitCrusherChange', state => {
+      this.updateEffect('bit-crusher', state)
     })
 
     /**
@@ -134,6 +166,13 @@ export default class AudioController {
     const reverbState = effectsStore.states.reverb
     const reverb = new Reverb(context, reverbState)
     this.#effects.set('reverb', reverb)
+
+    /**
+     * BitCrusher effect.
+     */
+    const bitCrusherState = effectsStore.states.bitCrusher
+    const bitCrusher = new BitCrusher(context, bitCrusherState)
+    this.#effects.set('bit-crusher', bitCrusher)
   }
 
   /**

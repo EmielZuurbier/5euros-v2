@@ -25,7 +25,7 @@ export default {
   name: 'common',
   path: '*',
   events: {
-    async customElements() {
+    async setup() {
       /**
        * Define all custom elements.
        */
@@ -51,11 +51,6 @@ export default {
       unmuteAudio()
 
       /**
-       * Iniate SVG icons
-       */
-      fontAwesome()
-
-      /**
        * Register Service Worker.
        */
       try {
@@ -70,6 +65,11 @@ export default {
       } catch (error) {
         console.log(error)
       }
+
+      /**
+       * Iniate SVG icons
+       */
+      fontAwesome()
 
       /**
        * Create an audio controller isntance.

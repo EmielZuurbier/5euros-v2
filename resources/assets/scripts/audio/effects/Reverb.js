@@ -1,5 +1,5 @@
 export default class Reverb {
-  static meta() {
+  static get meta() {
     return {
       name: 'Reverb',
       params: {
@@ -70,13 +70,15 @@ export default class Reverb {
   }
 
   /**
-   * Simple Reverb constructor.
-   *
+   * @typedef {object} ReverbArgs
+   * @property {number} seconds
+   * @property {number} decay
+   * @property {boolean} reverse
+   */
+
+  /**
    * @param {AudioContext} context
-   * @param {object} args
-   * @param {number} args.seconds
-   * @param {number} args.decay
-   * @param {boolean} args.reverse
+   * @param {ReverbArgs} args
    */
   constructor(context, { bypass, seconds, decay, reverse }) {
     this.#context = context
@@ -99,7 +101,7 @@ export default class Reverb {
 
     this.bypass = bypass
 
-    const { params } = Reverb.meta()
+    const { params } = Reverb.meta
 
     this.#seconds = seconds || params.seconds.defaultValue
     this.#decay = decay || params.decay.defaultValue
@@ -107,33 +109,51 @@ export default class Reverb {
     this.#buildImpulse()
   }
 
+  /**
+   * Gets and sets the seconds param.
+   */
   get seconds() {
     return this.#seconds
   }
 
   set seconds(value) {
-    this.#seconds = value
-    this.#buildImpulse()
+    if (this.#seconds !== value) {
+      this.#seconds = value
+      this.#buildImpulse()
+    }
   }
 
+  /**
+   * Gets and sets the decay param.
+   */
   get decay() {
     return this.#decay
   }
 
   set decay(value) {
-    this.#decay = value
-    this.#buildImpulse()
+    if (this.#decay !== value) {
+      this.#decay = value
+      this.#buildImpulse()
+    }
   }
 
+  /**
+   * Gets and sets the reverse param.
+   */
   get reverse() {
     return this.#reverse
   }
 
   set reverse(value) {
-    this.#reverse = value
-    this.#buildImpulse()
+    if (this.#reverse !== value) {
+      this.#reverse = value
+      this.#buildImpulse()
+    }
   }
 
+  /**
+   * When true the effect will not be connected.
+   */
   get bypass() {
     return this.#bypass
   }
