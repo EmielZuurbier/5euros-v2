@@ -125,3 +125,8 @@ function locate_template($templates)
 {
     return \locate_template(filter_templates($templates));
 }
+
+function resources_assets_path($resource)
+{
+    return get_template_directory_uri() . '/assets/' . $resource;
+}

@@ -14,6 +14,7 @@ use App\Gutenberg\Gutenberg;
 
 use App\Assets\Scripts;
 use App\Assets\Styles;
+use App\Assets\Manifest;
 
 use App\Media\ImageSizes;
 
@@ -24,6 +25,7 @@ new FragmentRest();
 new ImageSizes();
 new Scripts();
 new Styles();
+new Manifest();
 new ACF();
 new Gutenberg();
 

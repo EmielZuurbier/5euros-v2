@@ -1,0 +1,9 @@
+{
+	"name": "5 Euro's Soundboard",
+	"short_name": "5 Euro's",
+	"start_url": "/",
+	"background_color": "#111111",
+	"display": "standalone",
+	"theme_color": "#111111",
+  "orientation": "portrait"
+}
