@@ -8,7 +8,7 @@ use Roots\Sage\Template\Blade;
 use Roots\Sage\Template\BladeProvider;
 
 use App\PostTypes\Fragment;
-use App\Rest\FragmentRest;
+use App\API\Rest;
 
 use App\Gutenberg\Gutenberg;
 
@@ -21,7 +21,7 @@ use App\Media\ImageSizes;
 use App\Plugins\ACF;
 
 new Fragment();
-new FragmentRest();
+new Rest();
 new ImageSizes();
 new Scripts();
 new Styles();

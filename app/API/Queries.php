@@ -1,129 +1,18 @@
 <?php
 
-namespace App\Rest;
+namespace App\API;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_REST_Server;
 
-class FragmentRest
+class Queries
 {
-  private $sticky_transient_key = 'sticky';
-  private $fragments_transient_key = 'fragments';
-
-  protected $vendor = '5euros';
-  protected $api_version = 'v1';
-
   /**
-   * The amount of fragments every category should show.
-   * @var integer
+   * Returns either a specific page or the front page
+   * @param string $name
+   * @return array
    */
-  private $amount_of_fragments_per_category = -1;
-
-  /**
-   * Register the routes on the rest_api_init hook.
-   */
-  public function __construct()
-  {
-    add_action('rest_api_init', [$this, 'register_routes'], 10);
-  }
-
-  /**
-   * Returns the vendor and api version combined separated by a forward slash.
-   * @return string
-   */
-  private function namespace()
-  {
-    return $this->vendor . '/' . $this->api_version;
-  }
-
-  /**
-   * Returns a nested array of routes.
-   * @return array[]
-   */
-  public function routes()
-  {
-    return [
-      [
-        'route' => 'page/(?:/(?P<name>\D+))?',
-        'args'  => [
-          'method'              => WP_REST_Server::READABLE,
-          'callback'            => [$this, 'get_page'],
-          'permission_callback' => '__return_true',
-          'args'                => [
-            'name'                => [
-              'validate_callback'   => function ($param, $request, $key) {
-                return true;
-              }
-            ]
-          ]
-        ]
-      ],
-      [
-        'route' => 'data',
-        'args'  => [
-          'methods'             => WP_REST_Server::READABLE,
-          'callback'            => [$this, 'get_data'],
-          'permission_callback' => [$this, 'verify_nonce']
-        ],
-      ],
-      [
-        'route' => 'search/(?P<query>\D+)',
-        'args'  => [
-          'methods'             => WP_REST_Server::READABLE,
-          'args'                => [
-            'query'               => [
-              'required'            => true,
-              'validate_callback'   => function ($param, $request, $key) {
-                return true;
-              }
-            ]
-          ],
-          'callback'            => [$this, 'search_data'],
-          'permission_callback' => [$this, 'verify_nonce']
-        ]
-      ]
-    ];
-  }
-
-  /**
-   * Only allow requests that come directly from the page.
-   * @param WP_REST_Request $request
-   * @return bool
-   */
-  public function verify_nonce(WP_REST_Request $request)
-  {
-    $nonce = $request->get_header('x-wp-nonce');
-    $nonce_verification = wp_verify_nonce($nonce, 'wp_rest');
-
-    if ($nonce_verification === 1 || $nonce_verification === 2) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
-   * Loops over the routes array and registers each rout.
-   */
-  public function register_routes()
-  {
-    $namespace = $this->namespace();
-    $routes = $this->routes();
-
-    foreach ($routes as [
-      'route' => $route,
-      'args'  => $args
-    ]) {
-      register_rest_route(
-        $namespace,
-        $route,
-        $args
-      );
-    }
-  }
-
-  public function get_route(WP_REST_Request $request)
+  public function get_page($name)
   {
     /**
      * Search for a post with the given name.
@@ -135,11 +24,6 @@ class FragmentRest
     ];
 
     /**
-     * Get the name that is requested
-     */
-    $name = $request->get_param('name');
-
-    /**
      * Search for either the name, or the front page.
      */
     if ($name) {
@@ -148,7 +32,7 @@ class FragmentRest
       $args['p'] = get_option('page_on_front');
     }
 
-    $query = new WP_Query($args);
+    $query = new \WP_Query($args);
     if ($query->have_posts()) {
       while ($query->have_posts()) {
         $query->the_post();
@@ -159,28 +43,28 @@ class FragmentRest
           'excerpt'   => get_the_excerpt(),
           'content'   => get_the_content(),
         ];
-
-        return new WP_REST_Response($response);
       }
 
       wp_reset_postdata();
     }
+
+    return $response;
   }
 
   /**
    * Return the data that have a sticky value.
    * @return array
    */
-  public function sticky_data()
+  public function get_sticky_data()
   {
     /**
-     * First check the cache.
+     * Put all results in the response array.
      */
-    $sticky = get_transient($this->sticky_transient_key);
-    if ($sticky) {
-      return $sticky;
-    }
+    $response = [];
 
+    /**
+     * 
+     */
     $sticky = [
       'id'        => 0,
       'title'     => 'Uitgelicht',
@@ -225,10 +109,9 @@ class FragmentRest
           $sticky['items'][] = [
             'id'         => 'sticky-' . $fragment_id,
             'title'      => $title,
-            'categoryId' => 0,
+            'category'   => 0,
             'thumbnail'   => [
               '@1x'         => $still['sizes']['fragment-thumbnail@1x'],
-              '@2x'         => $still['sizes']['fragment-thumbnail@2x'],
               'alt'         => $still['alt']
             ],
             'audio'      => [
@@ -242,34 +125,20 @@ class FragmentRest
       wp_reset_postdata();
     }
 
-    set_transient($this->sticky_transient_key, $sticky);
-    return $sticky;
+    $response[] = $sticky;
+    return $response;
   }
 
   /**
    * Get all data divided in categories.
-   * @param WP_REST_Request $request
-   * @return WP_REST_Response
+   * @return array
    */
-  public function get_data(WP_REST_Request $request)
+  public function get_data()
   {
     /**
-     * Check if there is a cache store response.
-     */
-    $response = get_transient($this->fragments_transient_key);
-    if ($response) {
-      return new WP_REST_Response($response);
-    }
-
-    /**
-     * Otherwise create a new one.
+     * Put all results in the response array.
      */
     $response = [];
-
-    /** 
-     * Add the sticky data first.
-     */
-    $response[] = $this->sticky_data();
 
     // Get all existing and filled terms.
     $terms = get_terms([
@@ -282,12 +151,6 @@ class FragmentRest
     // If there are terms
     if (!empty($terms)) {
       foreach ($terms as $term) {
-        /**
-         * Get the category thumbnail for each category.
-         * @var array
-         */
-        // $category_thumbnail = get_field('category_thumbnail', $term);
-
         /**
          * The current category term id.
          * @var integer
@@ -305,11 +168,6 @@ class FragmentRest
         $data = [
           'id'        => $term_id,
           'title'     => $term->name,
-          // 'thumbnail' => [
-          //   '@1x'       => $category_thumbnail['sizes']['fragment-thumbnail@1x'],
-          //   // '@2x'       => $category_thumbnail['sizes']['fragment-thumbnail@2x'],
-          //   'alt'       => $category_thumbnail['alt']
-          // ],
           'items'     => [],
           'hasMore'   => false
         ];
@@ -346,10 +204,9 @@ class FragmentRest
               $data['items'][] = [
                 'id'         => $fragment_id,
                 'title'      => $title,
-                'categoryId' => $term_id,
+                'category'   => $term_id,
                 'thumbnail'   => [
                   '@1x'         => $still['sizes']['fragment-thumbnail@1x'],
-                  // '@2x'         => $still['sizes']['fragment-thumbnail@2x'],
                   'alt'         => $still['alt']
                 ],
                 'audio'      => [
@@ -374,12 +231,7 @@ class FragmentRest
       }
     }
 
-    /**
-     * One day expiration.
-     */
-    $expiration = 3600 * 24;
-    set_transient($this->fragments_transient_key, $response, $expiration);
-    return new WP_REST_Response($response);
+    return $response;
   }
 
   /**
@@ -387,23 +239,18 @@ class FragmentRest
    * @param WP_REST_Request $request
    * @return WP_REST_Response
    */
-  public function search_data(WP_REST_Request $request)
+  public function search_data($query)
   {
-    $query = $request->get_param('query');
-    $query = urldecode($query);
-
     /**
-     * Check if there is a cache store response.
+     * Put all results in the response array.
      */
-    // $response = get_transient($query);
-    // if ($response) {
-    //   return new WP_REST_Response($response);
-    // }
-
     $response = [];
 
+    /**
+     * Create initial container.
+     */
     $found = [
-      'id'        => 0,
+      'id'        => 0, // These don't belong to a category, so we'll set it to 0.
       'title'     => $query,
       'items'     => [],
       'hasMore'   => false
@@ -443,7 +290,6 @@ class FragmentRest
             'title'      => $title,
             'thumbnail'   => [
               '@1x'         => $still['sizes']['fragment-thumbnail@1x'],
-              // '@2x'         => $still['sizes']['fragment-thumbnail@2x'],
               'alt'         => $still['alt']
             ],
             'audio'      => [
@@ -458,11 +304,6 @@ class FragmentRest
     }
 
     $response[] = $found;
-
-    /**
-     * Store the response.
-     */
-    // set_transient($query, $response);
-    return new WP_REST_Response($response);
+    return $response;
   }
 }
