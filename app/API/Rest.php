@@ -78,9 +78,11 @@ class Rest
         ],
       ],
       [
-        'route' => 'search/(?P<query>\D+)',
+        'route' => 'search\/(?P<query>\D+)',
         'args'  => [
           'methods'             => WP_REST_Server::READABLE,
+          'callback'            => [$this, 'search_data'],
+          'permission_callback' => [$this, 'verify_nonce'],
           'args'                => [
             'query'               => [
               'required'            => true,
@@ -88,9 +90,7 @@ class Rest
                 return true;
               }
             ]
-          ],
-          'callback'            => [$this, 'search_data'],
-          'permission_callback' => [$this, 'verify_nonce']
+          ]
         ]
       ]
     ];
@@ -146,14 +146,9 @@ class Rest
     $name = $request->get_param('name');
 
     /**
-     * Create new queries instance.
-     */
-    $queries = new Queries();
-
-    /**
      * Get a response based on the name.
      */
-    $response = $queries->get_page($name);
+    $response = Queries::get_page($name);
 
     /**
      * Return the response.
@@ -177,19 +172,14 @@ class Rest
     }
 
     /**
-     * Create new queries instance.
-     */
-    $queries = new Queries();
-
-    /**
      * First get the sticky data.
      */
-    $sticky_data = $queries->get_sticky_data();
+    $sticky_data = Queries::get_sticky_data();
 
     /**
      * Then get the rest of the data.
      */
-    $data = $queries->get_data();
+    $data = Queries::get_data();
 
     /**
      * Combine the two arrays.
@@ -220,14 +210,9 @@ class Rest
     $query = urldecode($request->get_param('query'));
 
     /**
-     * Create new queries instance.
-     */
-    $queries = new Queries();
-
-    /**
      * Get a response based on the query.
      */
-    $response = $queries->search_data($query);
+    $response = Queries::search_data($query);
 
     /**
      * Return the response.

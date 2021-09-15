@@ -12,7 +12,7 @@ class Queries
    * @param string $name
    * @return array
    */
-  public function get_page($name)
+  public static function get_page($name)
   {
     /**
      * Search for a post with the given name.
@@ -46,6 +46,13 @@ class Queries
       }
 
       wp_reset_postdata();
+    } else {
+      $response = [
+        'title'     => 404,
+        'link'      => '/',
+        'excerpt'   => 'Niet gevonden',
+        'content'   => '<p>De pagina is niet gevonden</p>',
+      ];
     }
 
     return $response;
@@ -55,7 +62,7 @@ class Queries
    * Return the data that have a sticky value.
    * @return array
    */
-  public function get_sticky_data()
+  public static function get_sticky_data()
   {
     /**
      * Put all results in the response array.
@@ -133,7 +140,7 @@ class Queries
    * Get all data divided in categories.
    * @return array
    */
-  public function get_data()
+  public static function get_data()
   {
     /**
      * Put all results in the response array.
@@ -158,6 +165,11 @@ class Queries
         $term_id = $term->term_id;
 
         /**
+         * Amount of posts to get.
+         */
+        $posts_per_page = -1;
+
+        /**
          * The current page to get.
          */
         $page = 1;
@@ -178,7 +190,7 @@ class Queries
         $args = [
           'post_type'       => 'fragment',
           'post_status'     => 'publish',
-          'posts_per_page'  => $this->amount_of_fragments_per_category,
+          'posts_per_page'  => $posts_per_page,
           'page'            => $page,
           'orderby'         => 'menu_order',
           'order'           => 'ASC',
@@ -239,7 +251,7 @@ class Queries
    * @param WP_REST_Request $request
    * @return WP_REST_Response
    */
-  public function search_data($query)
+  public static function search_data($query)
   {
     /**
      * Put all results in the response array.
