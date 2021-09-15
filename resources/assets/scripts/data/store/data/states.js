@@ -16,5 +16,11 @@ export default [
     state: {
       data: {}
     }
+  },
+  {
+    name: 'page',
+    state: {
+      data: {}
+    }
   }
 ]

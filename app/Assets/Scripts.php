@@ -48,7 +48,7 @@ class Scripts
           'js_key'        => 'appData',
           'data'          => [
             'endpoints'     => [
-              'page'          => esc_url(rest_url('5euros/v1/page')),
+              'page'          => esc_url(rest_url('wp/v2/pages')),
               'data'          => esc_url(rest_url('5euros/v1/data')),
               'search'        => esc_url(rest_url('5euros/v1/search')),
             ],

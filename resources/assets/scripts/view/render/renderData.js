@@ -16,7 +16,7 @@ import { createRandomDelay } from '@util'
  * @param {array} list
  * @returns {DocumentFragment}
  */
-const renderFragments = list => {
+export default list => {
   const documentFragment = new DocumentFragment()
 
   for (const { id, title, items } of list) {
@@ -93,5 +93,3 @@ const renderFragments = list => {
 
   return documentFragment
 }
-
-export default renderFragments

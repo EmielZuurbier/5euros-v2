@@ -14,11 +14,6 @@ export default class Store {
   }
 
   /**
-   * The state that is currently is being modified.
-   */
-  #selectedStateKey = null
-
-  /**
    * The states should not be muted directly and are therefor we store
    * the states in a private object.
    */
@@ -40,7 +35,6 @@ export default class Store {
         console.debug(`${changeEvent}: ${key}`, value)
         this.events.publish(`${changeEvent}`, state)
 
-        this.#selectedStateKey = null
         this.status = Store.status.RESTING
 
         return true
@@ -97,18 +91,16 @@ export default class Store {
       return false
     }
 
-    this.#selectedStateKey = stateKey
-
     // console.groupCollapsed(`ACTION: ${actionKey}`)
     this.status = Store.status.ACTION
     const action = this.actions[actionKey]
-    action(this, payload)
+    action(stateKey, this, payload)
     // console.groupEnd()
 
     return true
   }
 
-  commit(mutationKey, payload) {
+  commit(stateKey, mutationKey, payload) {
     if (typeof this.mutations[mutationKey] !== 'function') {
       console.log(`Mutation "${mutationKey}" doesn't exist`)
       return false
@@ -117,9 +109,10 @@ export default class Store {
     this.status = Store.status.MUTATION
     const mutation = this.mutations[mutationKey]
 
-    const currentState = this.states[this.#selectedStateKey]
+    const currentState = this.#states[stateKey]
     const newState = mutation(currentState, payload)
-    this.#states[this.#selectedStateKey] = Object.assign(currentState, newState)
+
+    this.#states[stateKey] = Object.assign(currentState, newState)
 
     return true
   }

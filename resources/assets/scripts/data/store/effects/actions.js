@@ -1,5 +1,5 @@
 export default {
-  setEffect(context, payload) {
+  setEffect(stateKey, context, payload) {
     const { name, value } = payload
 
     let stateValue
@@ -10,7 +10,7 @@ export default {
       stateValue = Number(value)
     }
 
-    context.commit('setEffect', {
+    context.commit(stateKey, 'setEffect', {
       name,
       value: stateValue
     })

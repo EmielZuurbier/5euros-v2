@@ -1,4 +1,5 @@
 import common from './common'
 import home from './home'
+import support from './support'
 
-export { common, home }
+export { common, home, support }

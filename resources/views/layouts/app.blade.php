@@ -8,8 +8,11 @@
     <div class="shell" role="document">
       @include('partials.header')
 
-      <main class="main-content">
+      <main class="main-content js-main-content">
         @yield('content')
+
+        @include('partials.effect-panel')
+        @include('partials.search-panel')
       </main>
 
       @include('partials.footer')

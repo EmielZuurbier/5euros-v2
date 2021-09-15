@@ -3,12 +3,15 @@ import './autoload/**/*'
 
 // import local dependencies
 import { Router } from '@util'
-import { common, home } from '@routes'
+import { common, home, support } from '@routes'
 /** Populate Router instance with DOM routes */
 const routes = new Router({
-  common,
-  home
+  '*': common,
+  '/': home,
+  '/support-ons/': support
 })
 
+routes.loadInitialRoute()
+
 // Load Events
-routes.loadEvents()
+// routes.loadEvents()

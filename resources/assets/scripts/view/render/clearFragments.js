@@ -5,7 +5,7 @@ import { getElementsInView, createRandomDelay } from '@util'
  * Whenever an animation element is used, it will animate out and then remove the element.
  * @param {HTMLElement} parent
  */
-const clearFragments = async parent => {
+export default async parent => {
   /**
    * Get all elements in view.
    * Stop the function if there are no elements found.
@@ -55,5 +55,3 @@ const clearFragments = async parent => {
     })
   }
 }
-
-export default clearFragments

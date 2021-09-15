@@ -6,6 +6,7 @@ import createHapticElement from './createHaptic'
 import createHeaderElement from './createHeader'
 import createInnerElement from './createInner'
 import createLoaderElement from './createLoader'
+import createObserverElement from './createObserver'
 import createThumbnailElement from './createThumbnail'
 
 export {
@@ -17,5 +18,6 @@ export {
   createHeaderElement,
   createInnerElement,
   createLoaderElement,
+  createObserverElement,
   createThumbnailElement
 }

@@ -1,5 +1,6 @@
-import renderFragments from './renderFragments'
 import clearFragments from './clearFragments'
+import renderData from './renderData'
 import renderInner from './renderInner'
+import renderPage from './renderPage'
 
-export { renderFragments, clearFragments, renderInner }
+export { renderData, clearFragments, renderInner, renderPage }

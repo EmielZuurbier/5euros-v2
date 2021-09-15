@@ -11,7 +11,7 @@ import {
  * @param {} param0
  * @returns
  */
-const renderInner = async ({ arrayBuffer, blob, id, title }) => {
+export default async ({ arrayBuffer, blob, id, title }) => {
   /**
    * Get the data element.
    */
@@ -99,5 +99,3 @@ const renderInner = async ({ arrayBuffer, blob, id, title }) => {
     })
   }
 }
-
-export default renderInner

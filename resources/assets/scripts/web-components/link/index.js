@@ -1,3 +1,4 @@
+import { Router } from '@util'
 import html from './template.html'
 
 const template = document.createElement('template')
@@ -11,6 +12,9 @@ export default class LinkElement extends HTMLElement {
     shadow.append(template.content.cloneNode(true))
   }
 
+  /**
+   * Returns the first anchor element from the slot.
+   */
   get anchor() {
     const slot = this.shadowRoot.querySelector('slot')
     const elements = slot.assignedElements()
@@ -19,9 +23,14 @@ export default class LinkElement extends HTMLElement {
       return null
     }
 
-    return elements[0]
+    const [anchor] = elements
+    return anchor
   }
 
+  /**
+   * Set the event listeners when connected
+   * @returns {void}
+   */
   connectedCallback() {
     if (this.anchor === null) {
       return
@@ -30,34 +39,24 @@ export default class LinkElement extends HTMLElement {
     this.addEventListener('click', this.onClick)
   }
 
+  /**
+   * Remove the event listeners when disconnecting
+   */
   disconnectedCallback() {
     this.removeEventListener('click', this.onClick)
   }
 
+  /**
+   * Set the push state on a click.
+   * @param {Event} event MouseEvent object
+   */
   onClick = event => {
     const { target } = event
-    const { href, title } = target
+    const { href, title, dataset } = target
 
-    /**
-     * Change the URL.
-     */
-    history.pushState({}, title, href)
-
-    /**
-     * Get the pathname from the href.
-     */
-    const url = new URL(href)
-
-    /**
-     * Send out an event saying that the navigation has changed.
-     */
-    const navigationEvent = new CustomEvent('navigation', {
-      detail: {
-        url
-      }
+    Router.navigate(href, title, {
+      pageId: dataset.pageId
     })
-    window.dispatchEvent(navigationEvent)
-
     event.preventDefault()
   }
 }

@@ -1,5 +1,3 @@
-import camelCase from './camelCase'
-
 /**
  * DOM-based Routing
  *
@@ -10,9 +8,67 @@ import camelCase from './camelCase'
  */
 export default class Router {
   /**
+   * Fire the navigation event and update the history state.
+   * @static
+   * @param {string} href
+   * @param {string} title
+   * @returns {void}
+   */
+  static navigate = (href, title, args) => {
+    const state = {
+      oldUrl: new URL(location.href).pathname,
+      newUrl: new URL(href).pathname,
+      args
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('navigation', {
+        detail: state
+      })
+    )
+
+    history.pushState(state, title, href)
+  }
+
+  /**
+   * Navigate back and fire the popstate event.
+   * @static
+   * @returns {void}
+   */
+  static back = () => {
+    history.back()
+  }
+
+  /**
    * Store the routes.
    */
   #routes = {}
+
+  /**
+   * Unload the current route and the fire the controllers for the new route.
+   * @param {CustomEvent} event
+   */
+  #onNavigation = async event => {
+    const { newUrl, oldUrl, args } = event.detail
+    const currentRoute = this.getRoute(oldUrl)
+
+    if (currentRoute !== undefined) {
+      await this.fire(currentRoute, 'unload')
+    }
+
+    await this.loadRoute(newUrl, args)
+  }
+
+  /**
+   * Send out an event saying that the navigation has changed.
+   */
+  #onPopState = ({ state }) => {
+    window.dispatchEvent(
+      new CustomEvent('navigation', {
+        detail: state
+      })
+    )
+  }
 
   /**
    * Create a new Router
@@ -21,8 +77,8 @@ export default class Router {
   constructor(routes) {
     this.#routes = routes
 
-    window.addEventListener('navigation', this.onNavigation)
-    window.addEventListener('popstate', this.onPopState)
+    window.addEventListener('navigation', this.#onNavigation)
+    window.addEventListener('popstate', this.#onPopState)
   }
 
   /**
@@ -31,75 +87,62 @@ export default class Router {
    * @param {string} [event] Events on the route. By default, `init` and `finalize` events are called.
    * @param {string} [arg] Any custom argument to be passed to the event.
    */
-  async fire(route, event = 'init', arg) {
-    document.dispatchEvent(
-      new CustomEvent('routed', {
-        bubbles: true,
-        detail: {
-          route,
-          fn: event
-        }
-      })
-    )
+  async fire(route, event = 'load', args) {
+    const hasEvent = route[event] && typeof route[event] === 'function'
 
-    const fire =
-      route !== '' &&
-      this.#routes[route] &&
-      typeof this.#routes[route].events[event] === 'function'
-    if (fire) {
-      return this.#routes[route].events[event](arg)
+    if (!hasEvent) {
+      return null
     }
+
+    return route[event](args)
   }
 
-  getCommonRoutes() {
-    return Object.values(this.#routes).map(({ path }) => path === '*')
+  get currentPath() {
+    return location.pathname
   }
-
-  // async loadRoute(path) {
-
-  // }
-
-  // async loadCommonRoute() {
-  //   await this.fire('common')
-  //   await this.fire('common', 'customElements')
-  //   await this.fire('common', 'finalize')
-  // }
 
   /**
-   * Automatically load and fire Router events
-   *
-   * Events are fired in the following order:
-   *  * common init
-   *  * page-specific init
-   *  * page-specific finalize
-   *  * common finalize
+   * Returns an array of routes that should be fired on the common path.
+   * @returns {Object}
    */
-  async loadEvents() {
-    // Fire common init JS
-    await this.fire('common', 'setup')
-    await this.fire('common')
+  getCommonRoute() {
+    return this.getRoute('*')
+  }
 
-    // Fire page-specific init JS, and then finalize JS
-    const classNames = document.body.className
-      .toLowerCase()
-      .replace(/-/g, '_')
-      .split(/\s+/)
-      .map(camelCase)
+  /**
+   * Returns a specific route based on a pathname.
+   * @param {string} pathname The path to filter on.
+   * @returns {(Object[]|undefined)}
+   */
+  getRoute(pathname) {
+    return this.#routes?.[pathname]
+  }
 
-    for (const className of classNames) {
-      await this.fire(className)
-      await this.fire(className, 'finalize')
+  /**
+   * Load the common routes and the current route we're on.
+   */
+  async loadInitialRoute() {
+    const commonRoute = this.getCommonRoute()
+
+    await this.fire(commonRoute)
+    await this.loadRoute(this.currentPath)
+    await this.fire(commonRoute, 'finalize')
+  }
+
+  /**
+   * Load a route based on a pathname.
+   * @param {string} pathname The path of the route to load.
+   * @param {any} args Additonal arguments for the route.
+   * @returns {Promise}
+   */
+  async loadRoute(pathname, args) {
+    const route = this.getRoute(pathname)
+
+    if (route === undefined) {
+      return
     }
 
-    // Fire common finalize JS
-    this.fire('common', 'finalize')
-  }
-
-  onNavigation = event => {
-    console.log(event)
-  }
-
-  onPopState = event => {
-    console.log(event)
+    await this.fire(route, 'load', args)
+    await this.fire(route, 'finalize')
   }
 }

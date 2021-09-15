@@ -11,6 +11,10 @@
   text-decoration: none;
   cursor: pointer;
 
+  & > * {
+    pointer-events: none;
+  }
+
   &.is-icon {
     display: flex;
     align-items: center;

@@ -1,6 +1,6 @@
-<euros-reset class="banner-brand">
+<euros-link class="banner-brand">
   <a class="brand permanent-marker" href="{{ $home_url }}">{{ $site_name }}</a>
-</euros-reset>
+</euros-link>
 
 <ul class="banner-actions">
   <li>
@@ -38,10 +38,12 @@
 
   <li>
     <euros-haptic>
-      <a href="/support-ons/" class="button is-icon has-cod-gray-color has-heliothrope-background-color">
-        {{-- <i class="fas fa-gift"></i> --}}
-        <i class="fab fa-paypal"></i>
-      </a>
+      <euros-link>
+        <a href="/support-ons/" data-page-id="846" class="button is-icon has-cod-gray-color has-heliothrope-background-color">
+          <i class="fas fa-gift"></i>
+          {{-- <i class="fab fa-paypal"></i> --}}
+        </a>
+      </euros-link>
     </euros-haptic>
   </li>
 </ul>
